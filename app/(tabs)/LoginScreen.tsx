@@ -79,10 +79,10 @@ const LoginScreen = () => {
           </Text>
 
           <View style={styles.socialMediaContainer}>
-            <Entypo 
-              name={"facebook-with-circle"} 
+            <AntDesign 
+              name={"apple1"} 
               size={30} 
-              color={"blue"} 
+              color={"black"} 
               style={styles.socialIcon}
             />
 
