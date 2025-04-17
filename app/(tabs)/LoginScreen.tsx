@@ -1,26 +1,39 @@
-import { Image, ImageBackground, StyleSheet, Text, TextInput, View } from 'react-native';
-import React from 'react';
+import { Image, StyleSheet, Text, TextInput, View,} from 'react-native';
+import React, { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
-
+import { login } from '../../auth';  
 
 const LoginScreen = () => {
-
   const navigation = useNavigation();
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleLogin = async () => {
+    const user = await login(username, password);
+
+    if (user) {
+      console.log('Usuario autenticado:', user);
+      // Navega a la pantalla principal después de un login exitoso
+      navigation.navigate('IndexScreen');
+    } else {
+      setErrorMessage('Credenciales incorrectas');
+    }
+  };
+
   const handleRegister = () => {
-    navigation.navigate("Signup");
+    navigation.navigate("SignupScreen");
   };
 
   return (
     <View style={styles.container}>
-
-      <View style={styles.topImageContainer}> 
+      <View style={styles.topImageContainer}>
         <Image source={require("./assets/topVector.png")} style={styles.topImage}/>
       </View>
 
@@ -39,7 +52,13 @@ const LoginScreen = () => {
           color={"#9A9A9A"} 
           style={styles.inputIcon}
         />
-        <TextInput style={styles.textInput} placeholder='Usuario' placeholderTextColor="#9A9A9A" />
+        <TextInput 
+          style={styles.textInput} 
+          placeholder='Usuario' 
+          placeholderTextColor="#9A9A9A" 
+          value={username}
+          onChangeText={setUsername}
+        />
       </View>
 
       <View style={styles.inputContainer1}>
@@ -48,71 +67,64 @@ const LoginScreen = () => {
           size={24} 
           color={"#9A9A9A"} 
           style={styles.inputIcon}
-
         />
         <TextInput 
           style={styles.textInput} 
           placeholder="Contraseña" 
           placeholderTextColor="#9A9A9A" 
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
       </View>
 
-      <Text style={styles.forgotPasswordText}>Olvidaste la Contraseña?</Text>
+      {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
 
       <View style={styles.signButtonContainer}>
         <LinearGradient 
           colors={['#346DEE', '#5666F7']} 
           style={styles.linearGradient}>
-
-          <AntDesign 
-            name={"arrowright"} 
-            size={24} 
-            color={"white"} 
-          />
+          <TouchableOpacity onPress={handleLogin}>
+            <AntDesign name={"arrowright"} size={24} color={"white"} />
+          </TouchableOpacity>
         </LinearGradient>
       </View>
+
       <View>
         <TouchableOpacity onPress={handleRegister}>
           <Text style={styles.footerText}>
-            No tiene cuenta? <Text style={{ textDecorationLine: "underline" }}>Registrate</Text>
+            No tienes cuenta? <Text style={{ textDecorationLine: "underline" }}>Regístrate</Text>
           </Text>
-
-          <View style={styles.socialMediaContainer}>
-            <AntDesign 
-              name={"apple1"} 
-              size={30} 
-              color={"black"} 
-              style={styles.socialIcon}
-            />
-
-            <AntDesign 
-              name={"github"} 
-              size={30} 
-              color={"black"} 
-              style={styles.socialIcon}
-            />
-
-            <AntDesign 
-              name={"google"} 
-              size={30} 
-              color={"black"} 
-              style={styles.socialIcon}
-            />
-          </View>
-          
         </TouchableOpacity>
       </View>
-        
 
-
-      <View style={styles.leftVectorContainer}>
-          <ImageBackground source={require("./assets/leftVector.png")} style={styles.leftVectorImage}/>
+      <View style={styles.socialMediaContainer}>
+        <AntDesign 
+          name={"apple1"} 
+          size={30} 
+          color={"black"} 
+          style={styles.socialIcon}
+        />
+        <AntDesign 
+          name={"github"} 
+          size={30} 
+          color={"black"} 
+          style={styles.socialIcon}
+        />
+        <AntDesign 
+          name={"google"} 
+          size={30} 
+          color={"black"} 
+          style={styles.socialIcon}
+        />
       </View>
 
+      <View style={styles.leftVectorContainer}>
+        <Image source={require("./assets/leftVector.png")} style={styles.leftVectorImage}/>
+      </View>
     </View>
-  )
-}
+  );
+};
 
 export default LoginScreen
 
