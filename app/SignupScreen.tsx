@@ -6,7 +6,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
-import { register } from '../../auth'; 
+import { register } from '../auth'; 
 
 const SignupScreen = () => {
   const navigation = useNavigation();
@@ -100,7 +100,7 @@ const SignupScreen = () => {
       </View>
 
       <View style={styles.footerContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
           <Text style={styles.footerText}>
             Ya tienes una cuenta?{' '}
             <Text style={{ textDecorationLine: 'underline' }}>

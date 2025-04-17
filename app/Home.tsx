@@ -1,31 +1,22 @@
-import { Image, StyleSheet, Button } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Platform, Button } from 'react-native';
+import React from 'react';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { logout, getCurrentUser } from '../../auth';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-export default function HomeScreen() {
-  const [user, setUser] = useState(null);
+export default function Home() {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const user = params.user ? JSON.parse(params.user as string) : null;
 
-  // Cargar usuario al entrar
-  useEffect(() => {
-    const fetchUser = async () => {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
-    };
-    fetchUser();
-  }, []);
-
-  const handleLogout = async () => {
-    await logout();
-    setUser(null); // Esto actualiza la vista al "no logueado"
+  const handleLogout = () => {
+    router.replace('LoginScreen');
   };
 
   return (
+    
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
@@ -40,18 +31,21 @@ export default function HomeScreen() {
         </ThemedText>
         <HelloWave />
       </ThemedView>
-
-      {user ? (
+      
+      {user && (
         <ThemedView style={styles.stepContainer}>
           <ThemedText type="subtitle">Cerrar sesión</ThemedText>
           <Button title="Logout" onPress={handleLogout} />
         </ThemedView>
-      ) : (
+      )}
+
+      {!user && (
         <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Iniciar Sesión</ThemedText>
+          <ThemedText type="subtitle">Iniciar Sesion</ThemedText>
           <Button title="Ir al Login" onPress={() => router.replace('LoginScreen')} />
         </ThemedView>
       )}
+
     </ParallaxScrollView>
   );
 }
