@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 import { login, getUserSession } from '../auth';
@@ -21,7 +22,7 @@ const LoginScreen = () => {
       if (session) {
         navigation.reset({
           index: 0,
-          routes: [{ name: '(tabs)', params: { screen: 'IndexScreen' } }],
+          routes: [{ name: '(tabs)', params: { screen: 'index' } }],
         });
       }
     };
@@ -33,7 +34,7 @@ const LoginScreen = () => {
 
     if (user) {
       navigation.navigate('(tabs)', {
-        screen: 'IndexScreen',
+        screen: 'index',
         params: { user: JSON.stringify(user.user) },
       });
     } else {
@@ -47,9 +48,16 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.BackArrow} onPress={() => navigation.navigate('(tabs)', { screen: 'index' })}>
+        <MaterialIcons name="arrow-back-ios-new" size={24} color="white" />
+      </TouchableOpacity>
+
       <View style={styles.topImageContainer}>
         <Image source={require("./assets/topVector.png")} style={styles.topImage} />
       </View>
+      
+
 
       <Text style={styles.helloText}>Hello</Text>
       <Text style={styles.signInText}>Inicia Sesión</Text>
@@ -207,6 +215,13 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginTop: 10,
-  }
+  },
+
+  BackArrow: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+  },  
 });
 

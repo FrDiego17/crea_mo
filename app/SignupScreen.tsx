@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 import { register } from '../auth'; 
@@ -34,6 +35,11 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity style={styles.BackArrow} onPress={() => navigation.navigate('(tabs)', { screen: 'index' })}>
+        <MaterialIcons name="arrow-back-ios-new" size={24} color="white" />
+      </TouchableOpacity>
+
       <View style={styles.topImageContainer}>
         <Image source={require('./assets/topVector.png')} style={styles.topImage} />
       </View>
@@ -219,4 +225,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
   },
+
+  BackArrow: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+  },  
 });
